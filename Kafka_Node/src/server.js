@@ -1,13 +1,36 @@
 const express = require('express')
+const { Kafka } = require('kafkajs')
+import routes from './routes'
 
 const port = process.env.PORT || 3000
 const app = express()
 
-app.post('/cetifications', (req, res) => {
+app.use(routes)
 
-});
-
-
-app.listen(port, ()=>{
-    console.log(`Server running on port:${port}`)
+const kafka = new Kafka({
+    clientId: 'api',
+    brokers: ['kafka1:9092', 'kafka2:9092']
 })
+
+// const producer = kafka.producer()
+// const consumer = kafka.consumer({groupId: 'test-group'})
+
+async function run () {
+  //  await producer.connect()
+
+    app.listen(port, ()=>{
+        console.log(`Server running on port:${port}`)
+    })
+}
+
+run().catch(console.error)
+
+await producer.send({
+    topic: 'test-topic',
+    messages: [
+        { value: 'Hello kafkaJS user!' },
+    ],
+})
+
+
+
