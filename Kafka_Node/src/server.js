@@ -12,11 +12,11 @@ const kafka = new Kafka({
     brokers: ['kafka1:9092', 'kafka2:9092']
 })
 
-// const producer = kafka.producer()
+const producer = kafka.producer()
 // const consumer = kafka.consumer({groupId: 'test-group'})
 
 async function run () {
-  //  await producer.connect()
+  await producer.connect()
 
     app.listen(port, ()=>{
         console.log(`Server running on port:${port}`)
