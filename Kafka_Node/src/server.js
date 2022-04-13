@@ -1,6 +1,6 @@
-const express = require('express')
-const { Kafka } = require('kafkajs')
-import routes from './routes'
+import express from 'express'
+import { Kafka } from 'kafkajs'
+import routes from './routes.js'
 
 const port = process.env.PORT || 3000
 const app = express()
