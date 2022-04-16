@@ -1,24 +1,28 @@
 import express from 'express'
 import routes from './routes.js'
-import pkg from 'kafkajs';
-const { Kafka } = pkg;
+import kafka, { KeyedMessage, Producer } from 'kafka-node'
 
 const port = process.env.PORT || 3000
 const app = express()
 
+const Consumer = kafka.Consumer
+const client = new kafka.KafkaClient()
+const producer = new Producer(client)
+var km = new KeyedMessage('key', 'message')
+var payloads = [
+  {topic: 'topic1', messages: 'hi', partition: 0},
+  {topic: 'topic2', messages: ['hi','Good Morning', km] },
+]
 
+producer.on('ready', () =>{
+  producer.send(payloads, (err, data) => {
+      console.log(data)
+  })
+})
+producer.on('error', (err)=> {
+  console.log(err)
+})
 
-const kafka = new Kafka({
-    clientId: 'api',
-    brokers: ['localhost:9092'],
-    retry: {
-      initialRetryTime: 300,
-      retries: 10
-    },
-  });
-
-const producer = kafka.producer()
-const consumer = kafka.consumer({groupId: 'test-group'})
 
 app.use((req, res, next)=> {
     req.producer = producer;
@@ -27,23 +31,7 @@ app.use((req, res, next)=> {
 
 app.use(routes)
 
-async function run () {
-  await producer.connect()
-  .then(producer.send());
 
-    app.listen(port, ()=>{
-        console.log(`Server running on port:${port}`)
-    })
-}
-
-run().catch(console.error)
-
-await producer.send({
-    topic: 'test-topic',
-    messages: [
-        { value: 'Hello kafkaJS user!' },
-    ],
-})
 
 
 
