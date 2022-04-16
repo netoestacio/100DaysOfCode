@@ -6,7 +6,9 @@ const port = process.env.PORT || 3000
 const app = express()
 
 const Consumer = kafka.Consumer
-const client = new kafka.KafkaClient()
+const client = new kafka.KafkaClient({
+  kafkaHost: 'localhost:9092'
+})
 const producer = new Producer(client)
 var km = new KeyedMessage('key', 'message')
 var payloads = [
