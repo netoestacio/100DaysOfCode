@@ -1,10 +1,10 @@
-import React from 'react'
-import Link from 'next/Link'
+import React from "react";
+import Link from "next/Link"
 
-const Sobre = () => {
-    return(
+const Pesquisa = () => {
+    return (
         <div>
-            <h1>Pagina Sobre</h1>
+            <h1>Pesquisa</h1>
             <div>
                 <Link href='/'>
                     <a>Home</a>
@@ -14,4 +14,4 @@ const Sobre = () => {
     )
 }
 
-export default Sobre
+export default Pesquisa
